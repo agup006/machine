@@ -15,6 +15,10 @@ type BaseDriver struct {
 	SwarmMaster    bool
 	SwarmHost      string
 	SwarmDiscovery string
+	Registry	bool
+	RegistryHost   string
+	RegistryTLSCertificate	string
+	RegistryTLSKey	string
 }
 
 // NewBaseDriver - Get an instance of a BaseDriver
