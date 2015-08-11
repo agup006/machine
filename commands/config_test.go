@@ -15,6 +15,7 @@ import (
 	"github.com/docker/machine/libmachine/auth"
 	"github.com/docker/machine/libmachine/engine"
 	"github.com/docker/machine/libmachine/swarm"
+	"github.com/docker/machine/libmachine/registry"
 )
 
 func TestCmdConfig(t *testing.T) {
@@ -47,6 +48,10 @@ func TestCmdConfig(t *testing.T) {
 			Discovery: "",
 			Address:   "",
 			Host:      "",
+		},
+		RegistryOptions: &registry.RegistryOptions{
+			Address:	"",
+			Host:		"",	
 		},
 		AuthOptions: &auth.AuthOptions{},
 	}

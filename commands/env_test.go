@@ -15,6 +15,7 @@ import (
 	"github.com/docker/machine/libmachine/auth"
 	"github.com/docker/machine/libmachine/engine"
 	"github.com/docker/machine/libmachine/swarm"
+	"github.com/docker/machine/libmachine/registry"
 )
 
 func TestCmdEnvBash(t *testing.T) {
@@ -55,6 +56,10 @@ func TestCmdEnvBash(t *testing.T) {
 			Discovery: "",
 			Address:   "",
 			Host:      "",
+		},
+		RegistryOptions: &registry.RegistryOptions{
+			Address:	"",	
+			Host:		"",
 		},
 		AuthOptions: &auth.AuthOptions{},
 	}
@@ -155,6 +160,10 @@ func TestCmdEnvFish(t *testing.T) {
 			Address:   "",
 			Host:      "",
 		},
+		RegistryOptions: &registry.RegistryOptions{
+                        Address:        "",
+                        Host:           "",
+                },
 		AuthOptions: &auth.AuthOptions{},
 	}
 
@@ -254,6 +263,10 @@ func TestCmdEnvPowerShell(t *testing.T) {
 			Address:   "",
 			Host:      "",
 		},
+		RegistryOptions: &registry.RegistryOptions{
+                        Address:        "",
+                        Host:           "",
+                },
 		AuthOptions: &auth.AuthOptions{},
 	}
 

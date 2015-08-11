@@ -12,6 +12,7 @@ import (
 	"github.com/docker/machine/libmachine/auth"
 	"github.com/docker/machine/libmachine/engine"
 	"github.com/docker/machine/libmachine/swarm"
+	"github.com/docker/machine/libmachine/registry"
 	"github.com/docker/machine/state"
 )
 
@@ -69,6 +70,8 @@ func getTestDriverFlags() *DriverOptionsMock {
 			"swarm-host":      "",
 			"swarm-master":    false,
 			"swarm-discovery": "",
+			"registry":	   false,
+			"registry-host":   "",
 		},
 	}
 	return flags
@@ -82,6 +85,10 @@ func getDefaultTestHost() (*libmachine.Host, error) {
 		Discovery: "",
 		Address:   "",
 	}
+	registryOptions := &registry.RegistryOptions{
+		Host:		"",
+		Address:	"",	
+	}
 	authOptions := &auth.AuthOptions{
 		CaCertPath:     hostTestCaCert,
 		PrivateKeyPath: hostTestPrivateKey,
@@ -89,6 +96,7 @@ func getDefaultTestHost() (*libmachine.Host, error) {
 	hostOptions := &libmachine.HostOptions{
 		EngineOptions: engineOptions,
 		SwarmOptions:  swarmOptions,
+		RegistryOptions: registryOptions,
 		AuthOptions:   authOptions,
 	}
 	host, err := libmachine.NewHost(hostTestName, hostTestDriverName, hostOptions)
