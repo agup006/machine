@@ -32,6 +32,7 @@ import (
 	"github.com/docker/machine/libmachine"
 	"github.com/docker/machine/libmachine/auth"
 	"github.com/docker/machine/libmachine/swarm"
+	"github.com/docker/machine/libmachine/registry"
 	"github.com/docker/machine/log"
 	"github.com/docker/machine/utils"
 )
@@ -54,6 +55,7 @@ type machineConfig struct {
 	serverKeyPath  string
 	AuthOptions    auth.AuthOptions
 	SwarmOptions   swarm.SwarmOptions
+	RegistryOptions registry.RegistryOptions
 }
 
 func sortHostListItemsByName(items []libmachine.HostListItem) {
@@ -239,6 +241,31 @@ var sharedCreateFlags = []cli.Flag{
 		Name:  "swarm-addr",
 		Usage: "addr to advertise for Swarm (default: detect and use the machine IP)",
 		Value: "",
+	},
+	cli.BoolFlag{
+		Name: "registry",
+		Usage: "Configure Machine with Registry",
+	},
+	cli.StringFlag{
+		Name: "registry-image",
+		Usage: "Specify Docker image to use for Registry",
+		Value: "registry:latest",
+		EnvVar: "MACHINE_REGISTRY_IMAGE",
+	},
+	cli.StringFlag{
+		Name: "registry-host",
+		Usage: "ip/socket to listen on for Registry",
+		Value: "tcp://0.0.0.0:5000",
+	},
+	cli.StringFlag{
+		Name: "registry-addr",
+		Usage: "addr to advertise for Registry (default: detect and use the machine IP)",
+		Value: "",
+	},
+	cli.StringSliceFlag{
+		Name: "registry-opt",
+		Usage: "Define arbitrary flags for registry",
+		Value: &cli.StringSlice{},
 	},
 }
 
@@ -624,6 +651,7 @@ func getMachineConfig(c *cli.Context) (*machineConfig, error) {
 		serverKeyPath:  serverKey,
 		AuthOptions:    *m.HostOptions.AuthOptions,
 		SwarmOptions:   *m.HostOptions.SwarmOptions,
+		RegistryOptions: *m.HostOptions.RegistryOptions,
 	}, nil
 }
 

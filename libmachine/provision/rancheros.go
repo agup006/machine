@@ -11,6 +11,7 @@ import (
 	"github.com/docker/machine/libmachine/engine"
 	"github.com/docker/machine/libmachine/provision/pkgaction"
 	"github.com/docker/machine/libmachine/swarm"
+	"github.com/docker/machine/libmachine/registry"
 	"github.com/docker/machine/log"
 	"github.com/docker/machine/state"
 	"github.com/docker/machine/utils"
@@ -85,8 +86,9 @@ func (provisioner *RancherProvisioner) Package(name string, action pkgaction.Pac
 	return nil
 }
 
-func (provisioner *RancherProvisioner) Provision(swarmOptions swarm.SwarmOptions, authOptions auth.AuthOptions, engineOptions engine.EngineOptions) error {
+func (provisioner *RancherProvisioner) Provision(swarmOptions swarm.SwarmOptions, registryOptions registry.RegistryOptions, authOptions auth.AuthOptions, engineOptions engine.EngineOptions) error {
 	provisioner.SwarmOptions = swarmOptions
+	provisioner.RegistryOptions = registryOptions
 	provisioner.AuthOptions = authOptions
 	provisioner.EngineOptions = engineOptions
 
@@ -120,6 +122,12 @@ func (provisioner *RancherProvisioner) Provision(swarmOptions swarm.SwarmOptions
 	if err := configureSwarm(provisioner, swarmOptions, provisioner.AuthOptions); err != nil {
 		return err
 	}
+	
+	log.Debugf("Configuring registry")
+        if err := configureRegistry(provisioner, registryOptions, provisioner.AuthOptions); err != nil {
+                return err
+        }
+	
 
 	return nil
 }

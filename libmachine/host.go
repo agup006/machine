@@ -16,6 +16,7 @@ import (
 	"github.com/docker/machine/libmachine/provision"
 	"github.com/docker/machine/libmachine/provision/pkgaction"
 	"github.com/docker/machine/libmachine/swarm"
+        "github.com/docker/machine/libmachine/registry"
 	"github.com/docker/machine/log"
 	"github.com/docker/machine/ssh"
 	"github.com/docker/machine/state"
@@ -45,6 +46,7 @@ type HostOptions struct {
 	Disk          int
 	EngineOptions *engine.EngineOptions
 	SwarmOptions  *swarm.SwarmOptions
+	RegistryOptions *registry.RegistryOptions
 	AuthOptions   *auth.AuthOptions
 }
 
@@ -61,6 +63,7 @@ type HostListItem struct {
 	State        state.State
 	URL          string
 	SwarmOptions swarm.SwarmOptions
+	RegistryOptions registry.RegistryOptions
 }
 
 type ErrSavingConfig struct {
@@ -131,7 +134,7 @@ func (h *Host) Create(name string) error {
 			return err
 		}
 
-		if err := provisioner.Provision(*h.HostOptions.SwarmOptions, *h.HostOptions.AuthOptions, *h.HostOptions.EngineOptions); err != nil {
+		if err := provisioner.Provision(*h.HostOptions.SwarmOptions, *h.HostOptions.RegistryOptions, *h.HostOptions.AuthOptions, *h.HostOptions.EngineOptions); err != nil {
 			return err
 		}
 	}
@@ -327,7 +330,7 @@ func (h *Host) ConfigureAuth() error {
 	// and modularity of the provisioners should be).
 	//
 	// Call provision to re-provision the certs properly.
-	if err := provisioner.Provision(swarm.SwarmOptions{}, *h.HostOptions.AuthOptions, *h.HostOptions.EngineOptions); err != nil {
+	if err := provisioner.Provision(swarm.SwarmOptions{}, registry.RegistryOptions{}, *h.HostOptions.AuthOptions, *h.HostOptions.EngineOptions); err != nil {
 		return err
 	}
 

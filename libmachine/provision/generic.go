@@ -9,6 +9,7 @@ import (
 	"github.com/docker/machine/libmachine/auth"
 	"github.com/docker/machine/libmachine/engine"
 	"github.com/docker/machine/libmachine/swarm"
+	"github.com/docker/machine/libmachine/registry"
 )
 
 type GenericProvisioner struct {
@@ -21,6 +22,7 @@ type GenericProvisioner struct {
 	AuthOptions       auth.AuthOptions
 	EngineOptions     engine.EngineOptions
 	SwarmOptions      swarm.SwarmOptions
+	RegistryOptions	registry.RegistryOptions
 }
 
 func (provisioner *GenericProvisioner) Hostname() (string, error) {
